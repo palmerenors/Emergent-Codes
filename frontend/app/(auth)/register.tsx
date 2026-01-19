@@ -82,7 +82,7 @@ export default function RegisterScreen() {
           <View style={styles.form}>
             <TextInput
               style={styles.input}
-              placeholder="Full Name"
+              placeholder="Full Name *"
               value={name}
               onChangeText={setName}
               editable={!isLoading}
@@ -90,7 +90,48 @@ export default function RegisterScreen() {
 
             <TextInput
               style={styles.input}
-              placeholder="Email"
+              placeholder="First Name"
+              value={firstName}
+              onChangeText={setFirstName}
+              editable={!isLoading}
+            />
+
+            <TextInput
+              style={styles.input}
+              placeholder="Last Name"
+              value={lastName}
+              onChangeText={setLastName}
+              editable={!isLoading}
+            />
+
+            <TextInput
+              style={styles.input}
+              placeholder="Phone Number"
+              value={phoneNumber}
+              onChangeText={setPhoneNumber}
+              keyboardType="phone-pad"
+              editable={!isLoading}
+            />
+
+            <TextInput
+              style={styles.input}
+              placeholder="Address"
+              value={address}
+              onChangeText={setAddress}
+              editable={!isLoading}
+            />
+
+            <TextInput
+              style={styles.input}
+              placeholder="Country of Residence"
+              value={country}
+              onChangeText={setCountry}
+              editable={!isLoading}
+            />
+
+            <TextInput
+              style={styles.input}
+              placeholder="Email *"
               value={email}
               onChangeText={setEmail}
               autoCapitalize="none"
@@ -100,7 +141,7 @@ export default function RegisterScreen() {
 
             <TextInput
               style={styles.input}
-              placeholder="Password (min 6 characters)"
+              placeholder="Password (min 6 characters) *"
               value={password}
               onChangeText={setPassword}
               secureTextEntry
@@ -109,12 +150,14 @@ export default function RegisterScreen() {
 
             <TextInput
               style={styles.input}
-              placeholder="Confirm Password"
+              placeholder="Confirm Password *"
               value={confirmPassword}
               onChangeText={setConfirmPassword}
               secureTextEntry
               editable={!isLoading}
             />
+
+            <Text style={styles.requiredNote}>* Required fields</Text>
 
             <TouchableOpacity
               style={[styles.button, isLoading && styles.buttonDisabled]}
