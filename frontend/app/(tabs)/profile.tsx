@@ -8,16 +8,18 @@ import {
   Image,
   Switch,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuthStore } from '../../src/store/authStore';
 import { Ionicons } from '@expo/vector-icons';
-import { premiumAPI, notificationAPI } from '../../src/services/api';
+import { premiumAPI, notificationAPI, authAPI } from '../../src/services/api';
 
 export default function ProfileScreen() {
   const router = useRouter();
   const { user, logout } = useAuthStore();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleLogout = () => {
     Alert.alert('Logout', 'Are you sure you want to logout?', [
@@ -26,8 +28,19 @@ export default function ProfileScreen() {
         text: 'Logout',
         style: 'destructive',
         onPress: async () => {
-          await logout();
-          router.replace('/');
+          try {
+            setIsLoggingOut(true);
+            // Call backend logout
+            await authAPI.logout();
+          } catch (error) {
+            console.log('Backend logout error (non-critical):', error);
+          } finally {
+            // Always clear local state
+            await logout();
+            setIsLoggingOut(false);
+            // Navigate to landing page
+            router.replace('/');
+          }
         },
       },
     ]);
