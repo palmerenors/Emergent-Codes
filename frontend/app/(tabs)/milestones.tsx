@@ -20,7 +20,7 @@ interface Milestone {
   title: string;
   description: string;
   age_months: number;
-  completed: bool;
+  completed: boolean;
   completed_at?: string;
   notes?: string;
 }
