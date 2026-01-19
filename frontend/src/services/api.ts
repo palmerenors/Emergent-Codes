@@ -13,7 +13,7 @@ const api = axios.create({
 // Request interceptor to add auth token
 api.interceptors.request.use(
   async (config) => {
-    const token = await SecureStore.getItemAsync('auth_token');
+    const token = await storage.getItem('auth_token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -30,7 +30,7 @@ api.interceptors.response.use(
   async (error) => {
     if (error.response?.status === 401) {
       // Token expired or invalid
-      await SecureStore.deleteItemAsync('auth_token');
+      await storage.deleteItem('auth_token');
     }
     return Promise.reject(error);
   }
