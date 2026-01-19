@@ -37,8 +37,13 @@ export async function registerForPushNotificationsAsync() {
     });
 
     return token;
-  } catch (error) {
-    console.error('Error registering for push notifications:', error);
+  } catch (error: any) {
+    // Push notifications require development build, not available in Expo Go
+    if (error.message?.includes('projectId')) {
+      console.log('Push notifications require a development build. They are not available in Expo Go.');
+    } else {
+      console.error('Error registering for push notifications:', error);
+    }
     return null;
   }
 }
