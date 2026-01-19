@@ -1052,13 +1052,21 @@ async def send_new_post_notifications(post: Dict):
 
 @api_router.post("/seed-data")
 async def seed_data():
-    """Seed initial data for forums, support groups, and resources"""
-    # Forums
+    """Seed initial data for forums, support groups, resources, and sample posts"""
+    # Forums - Expanded
     forums_data = [
         {"forum_id": "forum_pregnancy", "name": "Pregnancy Journey", "description": "Share your pregnancy experiences", "category": "pregnancy", "members_count": 0, "posts_count": 0},
         {"forum_id": "forum_childbirth", "name": "Childbirth Stories", "description": "Birth stories and experiences", "category": "childbirth", "members_count": 0, "posts_count": 0},
         {"forum_id": "forum_postpartum", "name": "Postpartum Recovery", "description": "Postpartum journey and recovery", "category": "postpartum", "members_count": 0, "posts_count": 0},
-        {"forum_id": "forum_milestones", "name": "Baby Milestones", "description": "Track and celebrate baby milestones", "category": "baby_milestones", "members_count": 0, "posts_count": 0}
+        {"forum_id": "forum_milestones", "name": "Baby Milestones", "description": "Track and celebrate baby milestones", "category": "baby_milestones", "members_count": 0, "posts_count": 0},
+        {"forum_id": "forum_nutrition", "name": "Pregnancy Nutrition", "description": "Healthy eating during pregnancy", "category": "pregnancy", "members_count": 0, "posts_count": 0},
+        {"forum_id": "forum_exercise", "name": "Prenatal Fitness", "description": "Safe exercises during pregnancy", "category": "pregnancy", "members_count": 0, "posts_count": 0},
+        {"forum_id": "forum_twins", "name": "Multiples Support", "description": "For moms expecting twins or multiples", "category": "pregnancy", "members_count": 0, "posts_count": 0},
+        {"forum_id": "forum_adoption", "name": "Adoption Journey", "description": "Support for adoptive parents", "category": "general", "members_count": 0, "posts_count": 0},
+        {"forum_id": "forum_babynames", "name": "Baby Names", "description": "Discuss and share baby name ideas", "category": "pregnancy", "members_count": 0, "posts_count": 0},
+        {"forum_id": "forum_nursery", "name": "Nursery & Baby Gear", "description": "Tips on setting up your nursery", "category": "pregnancy", "members_count": 0, "posts_count": 0},
+        {"forum_id": "forum_workingmoms", "name": "Working Moms", "description": "Balancing career and motherhood", "category": "general", "members_count": 0, "posts_count": 0},
+        {"forum_id": "forum_singlemoms", "name": "Single Moms Community", "description": "Support for single mothers", "category": "general", "members_count": 0, "posts_count": 0},
     ]
     
     for forum in forums_data:
@@ -1069,12 +1077,16 @@ async def seed_data():
             upsert=True
         )
     
-    # Support Groups
+    # Support Groups - Expanded
     groups_data = [
         {"group_id": "group_ppd", "name": "Postpartum Depression Support", "description": "Support for mothers dealing with postpartum depression", "theme": "postpartum_depression", "members": [], "is_private": False},
         {"group_id": "group_breastfeeding", "name": "Breastfeeding Support", "description": "Tips and support for breastfeeding mothers", "theme": "breastfeeding", "members": [], "is_private": False},
         {"group_id": "group_sleep", "name": "Sleep Training Circle", "description": "Help with baby sleep training", "theme": "sleep_training", "members": [], "is_private": False},
-        {"group_id": "group_firsttime", "name": "First Time Moms", "description": "Support group for first-time mothers", "theme": "first_time_moms", "members": [], "is_private": False}
+        {"group_id": "group_firsttime", "name": "First Time Moms", "description": "Support group for first-time mothers", "theme": "first_time_moms", "members": [], "is_private": False},
+        {"group_id": "group_csection", "name": "C-Section Recovery", "description": "Support for c-section recovery", "theme": "c_section", "members": [], "is_private": False},
+        {"group_id": "group_premature", "name": "Preemie Parents", "description": "Support for parents of premature babies", "theme": "premature", "members": [], "is_private": False},
+        {"group_id": "group_loss", "name": "Pregnancy & Infant Loss", "description": "Compassionate support for loss", "theme": "loss", "members": [], "is_private": False},
+        {"group_id": "group_ivf", "name": "IVF & Fertility Journey", "description": "Support during fertility treatments", "theme": "fertility", "members": [], "is_private": False},
     ]
     
     for group in groups_data:
@@ -1085,13 +1097,28 @@ async def seed_data():
             upsert=True
         )
     
-    # Resources
+    # Resources - Greatly Expanded
     resources_data = [
-        {"resource_id": "res_001", "title": "Understanding Early Pregnancy Symptoms", "content": "A comprehensive guide to early pregnancy symptoms...", "resource_type": "article", "category": "pregnancy", "author": "Dr. Sarah Johnson", "tags": ["pregnancy", "symptoms"], "is_premium": False},
-        {"resource_id": "res_002", "title": "Preparing for Labor and Delivery", "content": "Everything you need to know about labor...", "resource_type": "guide", "category": "childbirth", "author": "Dr. Emily Chen", "tags": ["childbirth", "labor"], "is_premium": False},
-        {"resource_id": "res_003", "title": "Postpartum Recovery Tips", "content": "Essential tips for postpartum recovery...", "resource_type": "article", "category": "postpartum", "author": "Dr. Maria Rodriguez", "tags": ["postpartum", "recovery"], "is_premium": False},
-        {"resource_id": "res_004", "title": "Baby's First Year Milestones", "content": "Track your baby's development milestones...", "resource_type": "guide", "category": "baby_milestones", "author": "Dr. James Lee", "tags": ["milestones", "development"], "is_premium": False},
-        {"resource_id": "res_005", "title": "Advanced Nutrition During Pregnancy", "content": "Premium guide to pregnancy nutrition...", "resource_type": "guide", "category": "pregnancy", "author": "Dr. Sarah Johnson", "tags": ["pregnancy", "nutrition"], "is_premium": True}
+        {"resource_id": "res_001", "title": "Understanding Early Pregnancy Symptoms", "content": "Learn about morning sickness, fatigue, and other early signs of pregnancy. Discover tips for managing these symptoms naturally.", "resource_type": "article", "category": "pregnancy", "author": "Dr. Sarah Johnson", "tags": ["pregnancy", "symptoms"], "is_premium": False},
+        {"resource_id": "res_002", "title": "Preparing for Labor and Delivery", "content": "A comprehensive guide covering breathing techniques, pain management options, and what to expect during labor.", "resource_type": "guide", "category": "childbirth", "author": "Dr. Emily Chen", "tags": ["childbirth", "labor"], "is_premium": False},
+        {"resource_id": "res_003", "title": "Postpartum Recovery Tips", "content": "Essential guidance for physical and emotional recovery after giving birth, including care for c-sections and natural births.", "resource_type": "article", "category": "postpartum", "author": "Dr. Maria Rodriguez", "tags": ["postpartum", "recovery"], "is_premium": False},
+        {"resource_id": "res_004", "title": "Baby's First Year Milestones", "content": "Track developmental milestones from birth to age one, including motor skills, cognitive development, and social interactions.", "resource_type": "guide", "category": "baby_milestones", "author": "Dr. James Lee", "tags": ["milestones", "development"], "is_premium": False},
+        {"resource_id": "res_005", "title": "Advanced Nutrition During Pregnancy", "content": "Premium guide to optimal nutrition for pregnancy, including meal plans and supplement recommendations.", "resource_type": "guide", "category": "pregnancy", "author": "Dr. Sarah Johnson", "tags": ["pregnancy", "nutrition"], "is_premium": True},
+        {"resource_id": "res_006", "title": "Safe Exercise During Pregnancy", "content": "Learn which exercises are safe during each trimester and how to stay active throughout pregnancy.", "resource_type": "article", "category": "pregnancy", "author": "Dr. Lisa Martinez", "tags": ["pregnancy", "exercise"], "is_premium": False},
+        {"resource_id": "res_007", "title": "Breastfeeding Basics", "content": "A beginner's guide to breastfeeding, covering latch techniques, feeding schedules, and common challenges.", "resource_type": "guide", "category": "postpartum", "author": "Dr. Anna Williams", "tags": ["breastfeeding", "postpartum"], "is_premium": False},
+        {"resource_id": "res_008", "title": "Understanding Baby Sleep Patterns", "content": "Learn about newborn sleep cycles and safe sleep practices to help your baby (and you) get better rest.", "resource_type": "article", "category": "baby_milestones", "author": "Dr. Michael Brown", "tags": ["sleep", "baby"], "is_premium": False},
+        {"resource_id": "res_009", "title": "Postpartum Mental Health", "content": "Recognizing signs of postpartum depression and anxiety, plus resources for getting help.", "resource_type": "article", "category": "postpartum", "author": "Dr. Rachel Green", "tags": ["mental_health", "postpartum"], "is_premium": False},
+        {"resource_id": "res_010", "title": "Baby-Led Weaning Guide", "content": "Introduction to baby-led weaning, including when to start and safe first foods.", "resource_type": "guide", "category": "baby_milestones", "author": "Dr. Patricia Davis", "tags": ["feeding", "nutrition"], "is_premium": False},
+        {"resource_id": "res_011", "title": "Prenatal Yoga Flow", "content": "Premium video guide to prenatal yoga sequences for each trimester.", "resource_type": "video", "category": "pregnancy", "author": "Instructor Maya Patel", "tags": ["yoga", "exercise"], "is_premium": True},
+        {"resource_id": "res_012", "title": "Cesarean Section: What to Expect", "content": "Comprehensive guide to c-section procedures, recovery, and caring for your incision.", "resource_type": "guide", "category": "childbirth", "author": "Dr. Jennifer Taylor", "tags": ["c_section", "childbirth"], "is_premium": False},
+        {"resource_id": "res_013", "title": "Twins and Multiples Care", "content": "Special considerations and tips for expecting and caring for twins or multiples.", "resource_type": "article", "category": "pregnancy", "author": "Dr. Kevin Anderson", "tags": ["twins", "multiples"], "is_premium": False},
+        {"resource_id": "res_014", "title": "Creating a Birth Plan", "content": "Template and guidance for creating a personalized birth plan that reflects your preferences.", "resource_type": "guide", "category": "pregnancy", "author": "Midwife Susan Clark", "tags": ["birth_plan", "pregnancy"], "is_premium": False},
+        {"resource_id": "res_015", "title": "Postpartum Nutrition & Recovery", "content": "Nutritional needs after delivery to support healing and breastfeeding.", "resource_type": "article", "category": "postpartum", "author": "Nutritionist Amy White", "tags": ["nutrition", "recovery"], "is_premium": False},
+        {"resource_id": "res_016", "title": "Baby Massage Techniques", "content": "Premium video demonstration of infant massage to promote bonding and relaxation.", "resource_type": "video", "category": "baby_milestones", "author": "Therapist Laura Martinez", "tags": ["massage", "bonding"], "is_premium": True},
+        {"resource_id": "res_017", "title": "Managing Morning Sickness", "content": "Evidence-based strategies to cope with nausea and vomiting during pregnancy.", "resource_type": "article", "category": "pregnancy", "author": "Dr. Sarah Johnson", "tags": ["morning_sickness", "symptoms"], "is_premium": False},
+        {"resource_id": "res_018", "title": "Perineal Care After Birth", "content": "Guide to caring for your perineum after vaginal delivery, including pain management.", "resource_type": "guide", "category": "postpartum", "author": "Dr. Maria Rodriguez", "tags": ["recovery", "postpartum"], "is_premium": False},
+        {"resource_id": "res_019", "title": "Baby's Language Development", "content": "Milestones in speech and language from cooing to first words.", "resource_type": "article", "category": "baby_milestones", "author": "Speech Therapist Diana Lee", "tags": ["language", "development"], "is_premium": False},
+        {"resource_id": "res_020", "title": "Advanced Labor Positions", "content": "Premium guide to optimal labor positions for each stage of delivery.", "resource_type": "guide", "category": "childbirth", "author": "Doula Christine Moore", "tags": ["labor", "positions"], "is_premium": True},
     ]
     
     for resource in resources_data:
@@ -1102,7 +1129,169 @@ async def seed_data():
             upsert=True
         )
     
-    return {"message": "Data seeded successfully"}
+    # Sample Posts
+    sample_posts = [
+        {
+            "post_id": "post_sample_001",
+            "author_id": "sample_user_001",
+            "author_name": "Emma Thompson",
+            "author_picture": None,
+            "title": "Just felt the first kicks at 20 weeks!",
+            "content": "I'm so excited! I was sitting at my desk today when I felt these little flutters. It took me a moment to realize it was the baby moving. Such an incredible feeling! Anyone else remember their first kicks?",
+            "images": [],
+            "category": "pregnancy",
+            "tags": ["kicks", "20_weeks", "exciting"],
+            "likes_count": 24,
+            "comments_count": 8,
+            "is_moderated": True,
+            "moderation_status": "approved"
+        },
+        {
+            "post_id": "post_sample_002",
+            "author_id": "sample_user_002",
+            "author_name": "Sophia Martinez",
+            "author_picture": None,
+            "title": "Birth story: Positive induction experience",
+            "content": "I wanted to share my positive induction story for anyone who might be nervous. I was induced at 39 weeks due to gestational diabetes. The whole process took about 12 hours, and while it was intense, having a supportive partner and amazing nurses made all the difference. My baby girl arrived healthy at 7lbs 3oz!",
+            "images": [],
+            "category": "childbirth",
+            "tags": ["birth_story", "induction", "positive"],
+            "likes_count": 45,
+            "comments_count": 15,
+            "is_moderated": True,
+            "moderation_status": "approved"
+        },
+        {
+            "post_id": "post_sample_003",
+            "author_id": "sample_user_003",
+            "author_name": "Olivia Johnson",
+            "author_picture": None,
+            "title": "4 weeks postpartum - recovery update",
+            "content": "Four weeks out and finally starting to feel more like myself! The first two weeks were really tough with lack of sleep and healing, but it does get better. To any new mamas out there - be patient with yourself, rest when you can, and don't hesitate to ask for help!",
+            "images": [],
+            "category": "postpartum",
+            "tags": ["recovery", "4_weeks", "postpartum"],
+            "likes_count": 32,
+            "comments_count": 11,
+            "is_moderated": True,
+            "moderation_status": "approved"
+        },
+        {
+            "post_id": "post_sample_004",
+            "author_id": "sample_user_004",
+            "author_name": "Ava Davis",
+            "author_picture": None,
+            "title": "Baby rolled over for the first time!",
+            "content": "At 4 months old, our little one just rolled from tummy to back during tummy time! I actually missed it the first time because I looked away for a second. So glad I caught it on the second try! These milestones are so special.",
+            "images": [],
+            "category": "baby_milestones",
+            "tags": ["rolling", "4_months", "milestone"],
+            "likes_count": 28,
+            "comments_count": 6,
+            "is_moderated": True,
+            "moderation_status": "approved"
+        },
+        {
+            "post_id": "post_sample_005",
+            "author_id": "sample_user_005",
+            "author_name": "Isabella Wilson",
+            "author_picture": None,
+            "title": "Dealing with morning sickness - what worked for me",
+            "content": "I'm 8 weeks pregnant and the morning sickness has been brutal. Here's what's been helping: eating small meals every 2 hours, ginger tea, staying hydrated, and keeping crackers by the bed. Vitamin B6 also helped after talking to my doctor. Hang in there, mamas!",
+            "images": [],
+            "category": "pregnancy",
+            "tags": ["morning_sickness", "first_trimester", "tips"],
+            "likes_count": 41,
+            "comments_count": 19,
+            "is_moderated": True,
+            "moderation_status": "approved"
+        },
+        {
+            "post_id": "post_sample_006",
+            "author_id": "sample_user_006",
+            "author_name": "Mia Brown",
+            "author_picture": None,
+            "title": "Breastfeeding journey - 6 months strong!",
+            "content": "Just hit 6 months of breastfeeding! It wasn't easy at first - we had latch issues and I almost gave up. But with support from a lactation consultant and this amazing community, we pushed through. To anyone struggling: you've got this, and fed is best no matter what you choose!",
+            "images": [],
+            "category": "postpartum",
+            "tags": ["breastfeeding", "6_months", "support"],
+            "likes_count": 56,
+            "comments_count": 22,
+            "is_moderated": True,
+            "moderation_status": "approved"
+        },
+        {
+            "post_id": "post_sample_007",
+            "author_id": "sample_user_007",
+            "author_name": "Charlotte Garcia",
+            "author_picture": None,
+            "title": "Baby said 'mama' today!",
+            "content": "I know it was probably just babbling, but my 7-month-old clearly said 'mama' while looking right at me! My heart melted. These little moments make all the sleepless nights worth it.",
+            "images": [],
+            "category": "baby_milestones",
+            "tags": ["first_words", "7_months", "mama"],
+            "likes_count": 67,
+            "comments_count": 14,
+            "is_moderated": True,
+            "moderation_status": "approved"
+        },
+        {
+            "post_id": "post_sample_008",
+            "author_id": "sample_user_008",
+            "author_name": "Amelia Rodriguez",
+            "author_picture": None,
+            "title": "Tips for surviving the third trimester",
+            "content": "35 weeks and feeling every bit of it! Here are my survival tips: pregnancy pillow is a MUST, staying hydrated, gentle stretches, and not feeling guilty about taking naps. Also, preparing freezer meals has been a game changer for postpartum prep.",
+            "images": [],
+            "category": "pregnancy",
+            "tags": ["third_trimester", "tips", "35_weeks"],
+            "likes_count": 39,
+            "comments_count": 17,
+            "is_moderated": True,
+            "moderation_status": "approved"
+        },
+        {
+            "post_id": "post_sample_009",
+            "author_id": "sample_user_009",
+            "author_name": "Harper Lee",
+            "author_picture": None,
+            "title": "C-section recovery - one month update",
+            "content": "Had an unplanned c-section and wanted to share my recovery journey. The first week was tough, but following doctor's orders and taking it slow really helped. Incision is healing well, and I'm finally able to move around more comfortably. Remember to be gentle with yourself!",
+            "images": [],
+            "category": "postpartum",
+            "tags": ["c_section", "recovery", "1_month"],
+            "likes_count": 44,
+            "comments_count": 13,
+            "is_moderated": True,
+            "moderation_status": "approved"
+        },
+        {
+            "post_id": "post_sample_010",
+            "author_id": "sample_user_010",
+            "author_name": "Evelyn Martinez",
+            "author_picture": None,
+            "title": "Baby started crawling at 8 months!",
+            "content": "We've officially entered the mobile phase! Baby started crawling yesterday and hasn't stopped exploring. Time to baby-proof everything! Any tips on keeping curious crawlers safe?",
+            "images": [],
+            "category": "baby_milestones",
+            "tags": ["crawling", "8_months", "mobility"],
+            "likes_count": 35,
+            "comments_count": 9,
+            "is_moderated": True,
+            "moderation_status": "approved"
+        },
+    ]
+    
+    for post in sample_posts:
+        post["created_at"] = datetime.now(timezone.utc)
+        await db.posts.update_one(
+            {"post_id": post["post_id"]},
+            {"$setOnInsert": post},
+            upsert=True
+        )
+    
+    return {"message": "Data seeded successfully with expanded content"}
 
 
 # Include the router in the main app
