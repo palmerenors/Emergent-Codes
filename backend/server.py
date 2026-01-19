@@ -775,6 +775,234 @@ async def update_notification_preferences(
     return {"message": "Preferences updated successfully"}
 
 
+
+# ============= USER SEARCH ENDPOINTS =============
+
+@api_router.get("/users/search")
+async def search_users(
+    q: str = "",
+    interests: Optional[str] = None,
+    pregnancy_stage: Optional[str] = None,
+    limit: int = 20,
+    user: Dict = Depends(require_auth)
+):
+    """Search for users by name, interests, or pregnancy stage"""
+    query = {}
+    
+    if q:
+        # Search by name (case-insensitive)
+        query["name"] = {"$regex": q, "$options": "i"}
+    
+    if interests:
+        query["interests"] = interests
+    
+    if pregnancy_stage:
+        query["pregnancy_stage"] = pregnancy_stage
+    
+    # Exclude current user from results
+    query["user_id"] = {"$ne": user["user_id"]}
+    
+    users = await db.users.find(query, {"_id": 0, "password_hash": 0}).limit(limit).to_list(limit)
+    
+    return users
+
+
+# ============= DIRECT MESSAGING ENDPOINTS =============
+
+class Message(BaseModel):
+    message_id: str
+    conversation_id: str
+    sender_id: str
+    sender_name: str
+    sender_picture: Optional[str] = None
+    content: str
+    read: bool = False
+    created_at: datetime
+
+
+class MessageCreate(BaseModel):
+    recipient_id: str
+    content: str
+
+
+class Conversation(BaseModel):
+    conversation_id: str
+    participants: List[str]
+    participant_names: Dict[str, str]
+    participant_pictures: Dict[str, Optional[str]]
+    last_message: Optional[str] = None
+    last_message_at: Optional[datetime] = None
+    unread_count: int = 0
+    created_at: datetime
+
+
+@api_router.post("/messages")
+async def send_message(message_data: MessageCreate, user: Dict = Depends(require_auth)):
+    """Send a direct message"""
+    # Check if recipient exists
+    recipient = await db.users.find_one({"user_id": message_data.recipient_id}, {"_id": 0})
+    if not recipient:
+        raise HTTPException(status_code=404, detail="Recipient not found")
+    
+    # Find or create conversation
+    participants = sorted([user["user_id"], message_data.recipient_id])
+    conversation = await db.conversations.find_one(
+        {"participants": participants},
+        {"_id": 0}
+    )
+    
+    if not conversation:
+        # Create new conversation
+        conversation_id = f"conv_{uuid.uuid4().hex[:12]}"
+        conversation = {
+            "conversation_id": conversation_id,
+            "participants": participants,
+            "participant_names": {
+                user["user_id"]: user["name"],
+                message_data.recipient_id: recipient["name"]
+            },
+            "participant_pictures": {
+                user["user_id"]: user.get("picture"),
+                message_data.recipient_id: recipient.get("picture")
+            },
+            "last_message": message_data.content,
+            "last_message_at": datetime.now(timezone.utc),
+            "created_at": datetime.now(timezone.utc)
+        }
+        await db.conversations.insert_one(conversation)
+    else:
+        # Update existing conversation
+        conversation_id = conversation["conversation_id"]
+        await db.conversations.update_one(
+            {"conversation_id": conversation_id},
+            {
+                "$set": {
+                    "last_message": message_data.content,
+                    "last_message_at": datetime.now(timezone.utc)
+                }
+            }
+        )
+    
+    # Create message
+    message_id = f"msg_{uuid.uuid4().hex[:12]}"
+    message_doc = {
+        "message_id": message_id,
+        "conversation_id": conversation_id,
+        "sender_id": user["user_id"],
+        "sender_name": user["name"],
+        "sender_picture": user.get("picture"),
+        "content": message_data.content,
+        "read": False,
+        "created_at": datetime.now(timezone.utc)
+    }
+    
+    await db.messages.insert_one(message_doc)
+    
+    return Message(**message_doc)
+
+
+@api_router.get("/conversations")
+async def get_conversations(user: Dict = Depends(require_auth)):
+    """Get user's conversations"""
+    conversations = await db.conversations.find(
+        {"participants": user["user_id"]},
+        {"_id": 0}
+    ).sort("last_message_at", -1).to_list(100)
+    
+    # Calculate unread counts
+    for conv in conversations:
+        unread = await db.messages.count_documents({
+            "conversation_id": conv["conversation_id"],
+            "sender_id": {"$ne": user["user_id"]},
+            "read": False
+        })
+        conv["unread_count"] = unread
+    
+    return [Conversation(**conv) for conv in conversations]
+
+
+@api_router.get("/conversations/{conversation_id}/messages")
+async def get_messages(conversation_id: str, limit: int = 50, user: Dict = Depends(require_auth)):
+    """Get messages in a conversation"""
+    # Verify user is participant
+    conversation = await db.conversations.find_one(
+        {
+            "conversation_id": conversation_id,
+            "participants": user["user_id"]
+        },
+        {"_id": 0}
+    )
+    
+    if not conversation:
+        raise HTTPException(status_code=404, detail="Conversation not found")
+    
+    # Get messages
+    messages = await db.messages.find(
+        {"conversation_id": conversation_id},
+        {"_id": 0}
+    ).sort("created_at", 1).limit(limit).to_list(limit)
+    
+    # Mark messages as read
+    await db.messages.update_many(
+        {
+            "conversation_id": conversation_id,
+            "sender_id": {"$ne": user["user_id"]},
+            "read": False
+        },
+        {"$set": {"read": True}}
+    )
+    
+    return [Message(**msg) for msg in messages]
+
+
+# ============= PHOTO GALLERY ENDPOINTS =============
+
+@api_router.get("/gallery/my-photos")
+async def get_my_photos(user: Dict = Depends(require_auth)):
+    """Get all photos from user's posts"""
+    posts = await db.posts.find(
+        {"author_id": user["user_id"], "images": {"$ne": []}},
+        {"_id": 0, "post_id": 1, "title": 1, "images": 1, "created_at": 1}
+    ).sort("created_at", -1).to_list(None)
+    
+    photos = []
+    for post in posts:
+        for idx, image in enumerate(post["images"]):
+            photos.append({
+                "photo_id": f"{post['post_id']}_{idx}",
+                "post_id": post["post_id"],
+                "post_title": post["title"],
+                "image_url": image,
+                "created_at": post["created_at"]
+            })
+    
+    return photos
+
+
+@api_router.get("/gallery/community")
+async def get_community_photos(limit: int = 50, user: Dict = Depends(require_auth)):
+    """Get recent photos from community posts"""
+    posts = await db.posts.find(
+        {"images": {"$ne": []}, "moderation_status": "approved"},
+        {"_id": 0, "post_id": 1, "title": 1, "author_name": 1, "images": 1, "created_at": 1}
+    ).sort("created_at", -1).limit(limit).to_list(limit)
+    
+    photos = []
+    for post in posts:
+        for idx, image in enumerate(post["images"]):
+            photos.append({
+                "photo_id": f"{post['post_id']}_{idx}",
+                "post_id": post["post_id"],
+                "post_title": post["title"],
+                "author_name": post["author_name"],
+                "image_url": image,
+                "created_at": post["created_at"]
+            })
+    
+    return photos
+
+
+
 # ============= HELPER FUNCTIONS FOR NOTIFICATIONS =============
 
 async def send_new_post_notifications(post: Dict):
