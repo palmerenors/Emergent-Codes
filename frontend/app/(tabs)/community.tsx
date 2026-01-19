@@ -47,8 +47,12 @@ export default function CommunityScreen() {
       ]);
       setForums(forumsRes.data);
       setGroups(groupsRes.data);
-    } catch (error) {
-      console.error('Error fetching community data:', error);
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        console.log('Not authenticated, skipping community data fetch');
+      } else {
+        console.error('Error fetching community data:', error);
+      }
     } finally {
       setIsLoading(false);
     }
