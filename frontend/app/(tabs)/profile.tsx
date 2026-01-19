@@ -144,64 +144,192 @@ export default function ProfileScreen() {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        {user?.picture ? (
-          <Image source={{ uri: user.picture }} style={styles.avatar} />
-        ) : (
-          <View style={[styles.avatar, styles.avatarPlaceholder]}>
-            <Ionicons name="person" size={48} color="#999" />
-          </View>
-        )}
-        <Text style={styles.name}>{user?.name}</Text>
-        <Text style={styles.email}>{user?.email}</Text>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}
+    >
+      <ScrollView style={styles.container}>
+        <View style={styles.header}>
+          {user?.picture ? (
+            <Image source={{ uri: user.picture }} style={styles.avatar} />
+          ) : (
+            <View style={[styles.avatar, styles.avatarPlaceholder]}>
+              <Ionicons name="person" size={48} color="#999" />
+            </View>
+          )}
+          <Text style={styles.name}>{user?.name}</Text>
+          <Text style={styles.email}>{user?.email}</Text>
 
-        {user?.is_premium && (
-          <View style={styles.premiumBadge}>
-            <Ionicons name="star" size={16} color="#FFD700" />
-            <Text style={styles.premiumText}>Premium Member</Text>
-          </View>
-        )}
-      </View>
+          {user?.is_premium && (
+            <View style={styles.premiumBadge}>
+              <Ionicons name="star" size={16} color="#FFD700" />
+              <Text style={styles.premiumText}>Premium Member</Text>
+            </View>
+          )}
+        </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Profile Info</Text>
-        <InfoRow
-          icon="person-outline"
-          label="First Name"
-          value={user?.first_name || 'Not set'}
-        />
-        <InfoRow
-          icon="person-outline"
-          label="Last Name"
-          value={user?.last_name || 'Not set'}
-        />
-        <InfoRow
-          icon="call-outline"
-          label="Phone Number"
-          value={user?.phone_number || 'Not set'}
-        />
-        <InfoRow
-          icon="location-outline"
-          label="Address"
-          value={user?.address || 'Not set'}
-        />
-        <InfoRow
-          icon="globe-outline"
-          label="Country"
-          value={user?.country || 'Not set'}
-        />
-        <InfoRow
-          icon="calendar-outline"
-          label="Pregnancy Stage"
-          value={user?.pregnancy_stage || 'Not set'}
-        />
-        <InfoRow
-          icon="people-outline"
-          label="Children"
-          value={user?.children_count.toString() || '0'}
-        />
-      </View>
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Profile Info</Text>
+            {!isEditing && (
+              <TouchableOpacity
+                style={styles.editButton}
+                onPress={() => setIsEditing(true)}
+              >
+                <Ionicons name="create-outline" size={20} color="#FF69B4" />
+                <Text style={styles.editButtonText}>Edit</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+
+          {isEditing ? (
+            <>
+              <View style={styles.editField}>
+                <Text style={styles.fieldLabel}>First Name</Text>
+                <TextInput
+                  style={styles.input}
+                  value={firstName}
+                  onChangeText={setFirstName}
+                  placeholder="Enter first name"
+                />
+              </View>
+
+              <View style={styles.editField}>
+                <Text style={styles.fieldLabel}>Last Name</Text>
+                <TextInput
+                  style={styles.input}
+                  value={lastName}
+                  onChangeText={setLastName}
+                  placeholder="Enter last name"
+                />
+              </View>
+
+              <View style={styles.editField}>
+                <Text style={styles.fieldLabel}>Phone Number</Text>
+                <TextInput
+                  style={styles.input}
+                  value={phoneNumber}
+                  onChangeText={setPhoneNumber}
+                  placeholder="Enter phone number"
+                  keyboardType="phone-pad"
+                />
+              </View>
+
+              <View style={styles.editField}>
+                <Text style={styles.fieldLabel}>Address</Text>
+                <TextInput
+                  style={styles.input}
+                  value={address}
+                  onChangeText={setAddress}
+                  placeholder="Enter address"
+                />
+              </View>
+
+              <View style={styles.editField}>
+                <Text style={styles.fieldLabel}>Country</Text>
+                <TextInput
+                  style={styles.input}
+                  value={country}
+                  onChangeText={setCountry}
+                  placeholder="Enter country"
+                />
+              </View>
+
+              <View style={styles.editField}>
+                <Text style={styles.fieldLabel}>Bio</Text>
+                <TextInput
+                  style={[styles.input, styles.textArea]}
+                  value={bio}
+                  onChangeText={setBio}
+                  placeholder="Tell us about yourself"
+                  multiline
+                  numberOfLines={3}
+                />
+              </View>
+
+              <View style={styles.editField}>
+                <Text style={styles.fieldLabel}>Pregnancy Stage</Text>
+                <TextInput
+                  style={styles.input}
+                  value={pregnancyStage}
+                  onChangeText={setPregnancyStage}
+                  placeholder="e.g., expecting, postpartum"
+                />
+              </View>
+
+              <View style={styles.editField}>
+                <Text style={styles.fieldLabel}>Children Count</Text>
+                <TextInput
+                  style={styles.input}
+                  value={childrenCount}
+                  onChangeText={setChildrenCount}
+                  placeholder="Number of children"
+                  keyboardType="number-pad"
+                />
+              </View>
+
+              <View style={styles.editActions}>
+                <TouchableOpacity
+                  style={[styles.actionButton, styles.cancelButton]}
+                  onPress={handleCancelEdit}
+                  disabled={isSaving}
+                >
+                  <Text style={styles.cancelButtonText}>Cancel</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={[styles.actionButton, styles.saveButton, isSaving && styles.saveButtonDisabled]}
+                  onPress={handleSaveProfile}
+                  disabled={isSaving}
+                >
+                  {isSaving ? (
+                    <ActivityIndicator size="small" color="white" />
+                  ) : (
+                    <Text style={styles.saveButtonText}>Save Changes</Text>
+                  )}
+                </TouchableOpacity>
+              </View>
+            </>
+          ) : (
+            <>
+              <InfoRow
+                icon="person-outline"
+                label="First Name"
+                value={user?.first_name || 'Not set'}
+              />
+              <InfoRow
+                icon="person-outline"
+                label="Last Name"
+                value={user?.last_name || 'Not set'}
+              />
+              <InfoRow
+                icon="call-outline"
+                label="Phone Number"
+                value={user?.phone_number || 'Not set'}
+              />
+              <InfoRow
+                icon="location-outline"
+                label="Address"
+                value={user?.address || 'Not set'}
+              />
+              <InfoRow
+                icon="globe-outline"
+                label="Country"
+                value={user?.country || 'Not set'}
+              />
+              <InfoRow
+                icon="calendar-outline"
+                label="Pregnancy Stage"
+                value={user?.pregnancy_stage || 'Not set'}
+              />
+              <InfoRow
+                icon="people-outline"
+                label="Children"
+                value={user?.children_count.toString() || '0'}
+              />
+            </>
+          )}
+        </View>
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Settings</Text>
