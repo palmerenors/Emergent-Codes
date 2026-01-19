@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { storage } from '../utils/storage';
+import Constants from 'expo-constants';
 
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || '';
+const API_URL = Constants.expoConfig?.extra?.BACKEND_URL || process.env.EXPO_PUBLIC_BACKEND_URL || 'https://moms-journey.preview.emergentagent.com';
 
 const api = axios.create({
   baseURL: `${API_URL}/api`,
