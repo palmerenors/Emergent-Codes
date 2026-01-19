@@ -100,6 +100,31 @@ export default function ProfileScreen() {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Profile Info</Text>
         <InfoRow
+          icon="person-outline"
+          label="First Name"
+          value={user?.first_name || 'Not set'}
+        />
+        <InfoRow
+          icon="person-outline"
+          label="Last Name"
+          value={user?.last_name || 'Not set'}
+        />
+        <InfoRow
+          icon="call-outline"
+          label="Phone Number"
+          value={user?.phone_number || 'Not set'}
+        />
+        <InfoRow
+          icon="location-outline"
+          label="Address"
+          value={user?.address || 'Not set'}
+        />
+        <InfoRow
+          icon="globe-outline"
+          label="Country"
+          value={user?.country || 'Not set'}
+        />
+        <InfoRow
           icon="calendar-outline"
           label="Pregnancy Stage"
           value={user?.pregnancy_stage || 'Not set'}
