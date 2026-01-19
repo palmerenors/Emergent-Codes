@@ -1,13 +1,31 @@
-diff --git a/frontend/app/(tabs)/_layout.tsx b/frontend/app/(tabs)/_layout.tsx
-index 8f33c98..c3443f3 100644
---- a/frontend/app/(tabs)/_layout.tsx
-+++ b/frontend/app/(tabs)/_layout.tsx
-@@ -57,7 +57,7 @@ export default function TabLayout() {
-       />
-       <Tabs.Screen
-         name="milestones"
--        options={
-+        options={{
-           title: 'Milestones',
-           tabBarIcon: ({ color, size }) => (
-             <Ionicons name="trophy" size={size} color={color} />
+diff --git a/frontend/app/(tabs)/milestones.tsx b/frontend/app/(tabs)/milestones.tsx
+index 9744770..5b257e4 100644
+--- a/frontend/app/(tabs)/milestones.tsx
++++ b/frontend/app/(tabs)/milestones.tsx
+@@ -20,7 +20,7 @@ interface Milestone {
+   title: string;
+   description: string;
+   age_months: number;
+-  completed: bool;
++  completed: boolean;
+   completed_at?: string;
+   notes?: string;
+ }
+diff --git a/model.patch b/model.patch
+index 51f5f32..e69de29 100644
+--- a/model.patch
++++ b/model.patch
+@@ -1,13 +0,0 @@
+-diff --git a/frontend/app/(tabs)/_layout.tsx b/frontend/app/(tabs)/_layout.tsx
+-index 8f33c98..c3443f3 100644
+---- a/frontend/app/(tabs)/_layout.tsx
+-+++ b/frontend/app/(tabs)/_layout.tsx
+-@@ -57,7 +57,7 @@ export default function TabLayout() {
+-       />
+-       <Tabs.Screen
+-         name="milestones"
+--        options={
+-+        options={{
+-           title: 'Milestones',
+-           tabBarIcon: ({ color, size }) => (
+-             <Ionicons name="trophy" size={size} color={color} />
