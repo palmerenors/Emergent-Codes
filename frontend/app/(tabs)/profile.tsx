@@ -18,9 +18,74 @@ import { premiumAPI, notificationAPI, authAPI } from '../../src/services/api';
 
 export default function ProfileScreen() {
   const router = useRouter();
-  const { user, logout } = useAuthStore();
+  const { user, logout, setUser } = useAuthStore();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  
+  // Editable fields state
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [address, setAddress] = useState('');
+  const [country, setCountry] = useState('');
+  const [bio, setBio] = useState('');
+  const [pregnancyStage, setPregnancyStage] = useState('');
+  const [childrenCount, setChildrenCount] = useState('');
+
+  // Load user data into edit fields when entering edit mode
+  React.useEffect(() => {
+    if (isEditing && user) {
+      setFirstName(user.first_name || '');
+      setLastName(user.last_name || '');
+      setPhoneNumber(user.phone_number || '');
+      setAddress(user.address || '');
+      setCountry(user.country || '');
+      setBio(user.bio || '');
+      setPregnancyStage(user.pregnancy_stage || '');
+      setChildrenCount(user.children_count?.toString() || '0');
+    }
+  }, [isEditing, user]);
+
+  const handleSaveProfile = async () => {
+    try {
+      setIsSaving(true);
+      const updates = {
+        first_name: firstName,
+        last_name: lastName,
+        phone_number: phoneNumber,
+        address: address,
+        country: country,
+        bio: bio,
+        pregnancy_stage: pregnancyStage || undefined,
+        children_count: parseInt(childrenCount) || 0,
+      };
+
+      const response = await userAPI.updateProfile(updates);
+      setUser(response.data);
+      setIsEditing(false);
+      
+      if (Platform.OS === 'web') {
+        window.alert('Profile updated successfully!');
+      } else {
+        Alert.alert('Success', 'Profile updated successfully!');
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      if (Platform.OS === 'web') {
+        window.alert('Failed to update profile');
+      } else {
+        Alert.alert('Error', 'Failed to update profile');
+      }
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+  };
 
   const handleLogout = () => {
     if (Platform.OS === 'web') {
