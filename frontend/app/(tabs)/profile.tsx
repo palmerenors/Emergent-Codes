@@ -22,28 +22,39 @@ export default function ProfileScreen() {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleLogout = () => {
-    Alert.alert('Logout', 'Are you sure you want to logout?', [
-      { text: 'Cancel', style: 'cancel' },
-      {
-        text: 'Logout',
-        style: 'destructive',
-        onPress: async () => {
-          try {
-            setIsLoggingOut(true);
-            // Call backend logout
-            await authAPI.logout();
-          } catch (error) {
-            console.log('Backend logout error (non-critical):', error);
-          } finally {
-            // Always clear local state
-            await logout();
-            setIsLoggingOut(false);
-            // Navigate to landing page
-            router.replace('/');
-          }
+    if (Platform.OS === 'web') {
+      // Use window.confirm for web
+      const confirmed = window.confirm('Are you sure you want to logout?');
+      if (confirmed) {
+        performLogout();
+      }
+    } else {
+      // Use Alert.alert for native
+      Alert.alert('Logout', 'Are you sure you want to logout?', [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Logout',
+          style: 'destructive',
+          onPress: performLogout,
         },
-      },
-    ]);
+      ]);
+    }
+  };
+
+  const performLogout = async () => {
+    try {
+      setIsLoggingOut(true);
+      // Call backend logout
+      await authAPI.logout();
+    } catch (error) {
+      console.log('Backend logout error (non-critical):', error);
+    } finally {
+      // Always clear local state
+      await logout();
+      setIsLoggingOut(false);
+      // Navigate to landing page
+      router.replace('/');
+    }
   };
 
   const handleUpgradePremium = () => {
