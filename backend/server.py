@@ -58,6 +58,11 @@ class User(BaseModel):
     user_id: str
     email: str
     name: str
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    phone_number: Optional[str] = None
+    address: Optional[str] = None
+    country: Optional[str] = None
     picture: Optional[str] = None
     bio: Optional[str] = None
     pregnancy_stage: Optional[str] = None  # "expecting", "postpartum_0_1y", "postpartum_1_3y"
@@ -72,6 +77,11 @@ class UserCreate(BaseModel):
     email: EmailStr
     password: str
     name: str
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    phone_number: Optional[str] = None
+    address: Optional[str] = None
+    country: Optional[str] = None
 
 
 class UserLogin(BaseModel):
