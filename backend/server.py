@@ -449,7 +449,7 @@ async def update_profile(
     user: Dict = Depends(require_auth)
 ):
     """Update user profile"""
-    allowed_fields = ["name", "bio", "picture", "pregnancy_stage", "due_date", "children_count", "interests"]
+    allowed_fields = ["name", "first_name", "last_name", "phone_number", "address", "country", "bio", "picture", "pregnancy_stage", "due_date", "children_count", "interests"]
     update_data = {k: v for k, v in updates.items() if k in allowed_fields}
     
     if update_data:
