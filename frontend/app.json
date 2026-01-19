@@ -65,7 +65,8 @@
     "extra": {
       "eas": {
         "projectId": "blossom-app-123"
-      }
+      },
+      "BACKEND_URL": "https://moms-journey.preview.emergentagent.com"
     }
   }
 }
