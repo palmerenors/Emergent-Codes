@@ -137,40 +137,41 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  content: {
-    flex: 1,
+  scrollContent: {
+    flexGrow: 1,
     padding: 24,
-    justifyContent: 'space-between',
+    paddingTop: height > 700 ? 60 : 20,
+    paddingBottom: 40,
   },
   logoContainer: {
     alignItems: 'center',
-    marginTop: 80,
+    marginBottom: 24,
   },
   logoEmoji: {
-    fontSize: 80,
-    marginBottom: 16,
+    fontSize: height > 700 ? 60 : 48,
+    marginBottom: 12,
   },
   title: {
-    fontSize: 48,
+    fontSize: height > 700 ? 42 : 36,
     fontWeight: 'bold',
     color: '#FF69B4',
     marginBottom: 8,
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#666',
     textAlign: 'center',
-    paddingHorizontal: 32,
+    paddingHorizontal: 20,
   },
   featuresContainer: {
-    marginVertical: 32,
+    marginVertical: 20,
   },
   featureItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 12,
     backgroundColor: 'white',
-    padding: 16,
+    padding: 14,
     borderRadius: 12,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -179,15 +180,15 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   featureIcon: {
-    fontSize: 24,
+    fontSize: 20,
     marginRight: 12,
   },
   featureText: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#333',
   },
   buttonContainer: {
-    marginBottom: 32,
+    marginTop: 20,
   },
   googleButton: {
     backgroundColor: 'white',
@@ -213,7 +214,7 @@ const styles = StyleSheet.create({
   divider: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 24,
+    marginVertical: 16,
   },
   dividerLine: {
     flex: 1,
