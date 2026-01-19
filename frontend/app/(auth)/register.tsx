@@ -19,6 +19,11 @@ export default function RegisterScreen() {
   const router = useRouter();
   const { login } = useAuthStore();
   const [name, setName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [address, setAddress] = useState('');
+  const [country, setCountry] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -26,7 +31,7 @@ export default function RegisterScreen() {
 
   const handleRegister = async () => {
     if (!name || !email || !password || !confirmPassword) {
-      Alert.alert('Error', 'Please fill in all fields');
+      Alert.alert('Error', 'Please fill in required fields (Name, Email, Password)');
       return;
     }
 
@@ -42,7 +47,16 @@ export default function RegisterScreen() {
 
     try {
       setIsLoading(true);
-      const response = await authAPI.register({ email, password, name });
+      const response = await authAPI.register({ 
+        email, 
+        password, 
+        name,
+        first_name: firstName || undefined,
+        last_name: lastName || undefined,
+        phone_number: phoneNumber || undefined,
+        address: address || undefined,
+        country: country || undefined,
+      });
       await login(response.data.access_token, response.data.user);
       router.replace('/(tabs)');
     } catch (error: any) {
