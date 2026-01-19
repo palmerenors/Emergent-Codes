@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import * as SecureStore from 'expo-secure-store';
+import { storage } from '../utils/storage';
 
 interface User {
   user_id: string;
