@@ -15,7 +15,7 @@ export default function RootLayout() {
   useEffect(() => {
     async function loadAuth() {
       try {
-        const token = await SecureStore.getItemAsync('auth_token');
+        const token = await storage.getItem('auth_token');
         if (token) {
           setToken(token);
           const response = await authAPI.getMe();
@@ -24,10 +24,9 @@ export default function RootLayout() {
       } catch (error) {
         console.error('Error loading auth:', error);
         try {
-          await SecureStore.deleteItemAsync('auth_token');
+          await storage.deleteItem('auth_token');
         } catch (e) {
-          // SecureStore might not be available on web
-          console.log('Could not delete token from SecureStore');
+          console.log('Could not delete token from storage');
         }
       } finally {
         setLoading(false);
