@@ -10,11 +10,13 @@ import {
   Alert,
   ActivityIndicator,
   Platform,
+  TextInput,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuthStore } from '../../src/store/authStore';
 import { Ionicons } from '@expo/vector-icons';
-import { premiumAPI, notificationAPI, authAPI } from '../../src/services/api';
+import { premiumAPI, notificationAPI, authAPI, userAPI } from '../../src/services/api';
 
 export default function ProfileScreen() {
   const router = useRouter();
