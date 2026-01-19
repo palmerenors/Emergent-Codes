@@ -23,7 +23,12 @@ export default function RootLayout() {
         }
       } catch (error) {
         console.error('Error loading auth:', error);
-        await SecureStore.deleteItemAsync('auth_token');
+        try {
+          await SecureStore.deleteItemAsync('auth_token');
+        } catch (e) {
+          // SecureStore might not be available on web
+          console.log('Could not delete token from SecureStore');
+        }
       } finally {
         setLoading(false);
       }
