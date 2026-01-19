@@ -278,6 +278,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     borderRadius: 12,
   },
+  logoutButtonDisabled: {
+    opacity: 0.6,
+  },
   logoutText: {
     fontSize: 16,
     color: '#FF0000',
