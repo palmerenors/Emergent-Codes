@@ -229,6 +229,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 16,
   },
+  requiredNote: {
+    fontSize: 12,
+    color: '#666',
+    fontStyle: 'italic',
+    marginBottom: 8,
+  },
   button: {
     backgroundColor: '#FF69B4',
     padding: 16,
