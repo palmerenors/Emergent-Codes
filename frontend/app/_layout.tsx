@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { useAuthStore } from '../src/store/authStore';
 import { authAPI } from '../src/services/api';
-import * as SecureStore from 'expo-secure-store';
+import { storage } from '../src/utils/storage';
 import { ActivityIndicator, View } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import { setupNotificationChannels } from '../src/utils/notifications';
