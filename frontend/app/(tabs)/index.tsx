@@ -50,8 +50,12 @@ export default function HomeScreen() {
         limit: 20,
       });
       setPosts(response.data);
-    } catch (error) {
-      console.error('Error fetching posts:', error);
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        console.log('Not authenticated, skipping posts fetch');
+      } else {
+        console.error('Error fetching posts:', error);
+      }
     } finally {
       setIsLoading(false);
       setRefreshing(false);
