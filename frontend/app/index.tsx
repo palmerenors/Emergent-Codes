@@ -71,7 +71,10 @@ export default function IndexScreen() {
       colors={['#FFE5F1', '#FFF0F8', '#FFFFFF']}
       style={styles.container}
     >
-      <View style={styles.content}>
+      <ScrollView 
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.logoContainer}>
           <Text style={styles.logoEmoji}>🌸</Text>
           <Text style={styles.title}>Blossom</Text>
@@ -116,7 +119,7 @@ export default function IndexScreen() {
             <Text style={styles.registerButtonText}>Create Account</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </ScrollView>
     </LinearGradient>
   );
 }
