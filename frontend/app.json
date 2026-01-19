@@ -61,6 +61,11 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "blossom-app-123"
+      }
     }
   }
 }
